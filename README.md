@@ -8,18 +8,19 @@ Installation
 
 Usage
 ----------------------------------
-    config.yml
+config.yml
     ---
     fullname: Joe Bloggs
     user:
       name: Joe
 
-    other.yml
+other.yml
     ---
     user:
       address:
         street: 1 Some Road
 
+Code:
     AppConf.load('config.yml', 'other.yml')
     AppConf.fullname -> 'Joe Blogs'
     AppConf.user.name -> 'Joe'
@@ -37,7 +38,7 @@ Other stuff
 * Tested with RSpec
 * Works with Ruby 1.9.2
 * Not dependent on Rails but easy to use with it. For example:
-    AppConf.load('config.yml', "#{Rails.env}.yml")
+    `AppConf.load('config.yml', "#{Rails.env}.yml")`
 
 Why
 ----------------------------------
