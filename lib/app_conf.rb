@@ -18,16 +18,19 @@ class AppConf
     nil
   end
 
+  def [](key)
+    @config[key.to_s]
+  end
+
   def method_missing(method, *args, &block)
     method = method.to_s
-    method = args.delete_at(0).to_s if method == '[]'
     method = args.delete_at(0).to_s + '=' if method == '[]='
     if method[-1] == '='
       method = method[0..-2]
       raise "Not allowed to overwrite nested entities" if @config[method].is_a?(AppConf)
       @config[method] = args.first
     else
-      @config[method]
+      self[method]
     end
   end
 
