@@ -13,6 +13,11 @@ describe AppConf do
     AppConf.fullname.must_equal 'Joe Bloggs'
   end
 
+  it 'works with hash notation' do
+    AppConf[:fullname].must_equal 'Joe Bloggs'
+    AppConf['fullname'].must_equal 'Joe Bloggs'
+  end
+
   describe 'clear' do
     it 'clears all keys' do
       AppConf.fullname.wont_be_nil
@@ -27,6 +32,11 @@ describe AppConf do
 
   it 'works with nested dot notation' do
     AppConf.user.name.first.must_equal 'Joe'
+  end
+
+  it 'works with nested hash notation' do
+    AppConf[:user][:name][:first].must_equal 'Joe'
+    AppConf['user']['name']['first'].must_equal 'Joe'
   end
 
   it 'works with multiple files' do
@@ -44,6 +54,11 @@ describe AppConf do
 
   it 'allows additional keys to be set' do
     AppConf.user.name.last = 'Bloggs'
+    AppConf.user.name.last.must_equal 'Bloggs'
+  end
+
+  it 'allows additional keys to be set with hash notation' do
+    AppConf.user[:name][:last] = 'Bloggs'
     AppConf.user.name.last.must_equal 'Bloggs'
   end
 
