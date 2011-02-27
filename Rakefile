@@ -1,9 +1,11 @@
-require 'rspec/core/rake_task'
+require 'rake/testtask'
 
-desc 'tests, builds and installs'
+desc 'Test, build and install the gem'
 task :default => [:spec, :install]
 
-RSpec::Core::RakeTask.new(:spec)
+Rake::TestTask.new(:spec) do |t|
+  t.pattern = 'spec/*_spec.rb'
+end
 
 desc 'Build and install the gem'
 task :install do
@@ -19,7 +21,7 @@ task :install do
   end
 end
 
-desc 'takes the version in the gemspec creates a git tag and sends the gem to rubygems'
+desc 'Take the version in the gemspec, create a git tag and send the gem to rubygems'
 task :release do
   gemspec_path = Dir['*.gemspec'].first
   spec = eval(File.read(gemspec_path))

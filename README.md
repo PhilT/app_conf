@@ -1,6 +1,6 @@
 AppConf
 =======
-Simplest YAML backed Application configuration
+Simplest YAML Backed Application Configuration
 
 Installation
 ----------------------------------
@@ -35,8 +35,9 @@ Syntax
 
 Other stuff
 ----------------------------------
-* Tested with RSpec
 * Works with Ruby 1.9.2
+* No gem dependencies
+* Tested with MiniTest::Spec
 * Not dependent on Rails but easy to use with it. For example:
     `AppConf.load('config.yml', "#{Rails.env}.yml")`
 
