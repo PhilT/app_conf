@@ -22,13 +22,14 @@ class AppConf
     @config[key.to_s]
   end
 
+  def []=(key, value)
+    raise "Not allowed to overwrite nested entities" if @config[key.to_s].is_a?(AppConf)
+    @config[key.to_s] = value
+  end
+
   def method_missing(method, *args, &block)
-    method = method.to_s
-    method = args.delete_at(0).to_s + '=' if method == '[]='
     if method[-1] == '='
-      method = method[0..-2]
-      raise "Not allowed to overwrite nested entities" if @config[method].is_a?(AppConf)
-      @config[method] = args.first
+      self[method[0..-2]] = args.first
     else
       self[method]
     end
@@ -43,9 +44,9 @@ private
     hash.each do |key, value|
       if value.is_a?(Hash)
         new_app_config = new
-        value = recurse(value, app_config.send(key) || new_app_config)
+        value = recurse(value, app_config[key] || new_app_config)
       end
-      app_config.send("#{key}=", value) if new_app_config.nil? || value === new_app_config
+      app_config[key] = value if new_app_config.nil? || value === new_app_config
     end
     app_config
   end

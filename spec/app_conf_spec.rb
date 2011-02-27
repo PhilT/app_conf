@@ -78,6 +78,7 @@ describe AppConf do
 
     it 'does not allow nested items to be overwritten' do
       lambda { AppConf.user.name = 'something' }.must_raise RuntimeError
+      lambda { AppConf[:user][:name] = 'something' }.must_raise RuntimeError
     end
   end
 end
