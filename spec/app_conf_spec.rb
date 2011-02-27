@@ -39,6 +39,11 @@ describe AppConf do
     AppConf['user']['name']['first'].must_equal 'Joe'
   end
 
+  it 'works with mixed notation' do
+    AppConf[:user][:name][:first].must_equal 'Joe'
+    AppConf.user['name'].first.must_equal 'Joe'
+  end
+
   it 'works with multiple files' do
     AppConf.clear
     AppConf.load("#{@dir}/config.yml", "#{@dir}/other.yml")

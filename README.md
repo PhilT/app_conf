@@ -24,7 +24,7 @@ Code:
     AppConf.load('config.yml', 'other.yml')
     AppConf.fullname -> 'Joe Blogs'
     AppConf.user.name -> 'Joe'
-    AppConf.user.address.street -> '1 Some Road'
+    AppConf.user[:address]['street'] -> '1 Some Road'
 
 Syntax
 ----------------------------------
@@ -35,11 +35,17 @@ Or individually:
     AppConf.load(filename1)
     AppConf.load(filename2)
 
+Use either method calls or hash:
+    AppConf.fullname
+    AppConf[:fullname]
+    AppConf['fullname']
+
 Infinitely nested keys:
     AppConf.multiple.nested.keys
 
 Override existing values:
     AppConf.loaded.from.yaml = 'can override'
+    AppConf['loaded']['from']['yaml'] = 'can override'
 
 Set new values:
     AppConf.non.existing.value = 'can set'
