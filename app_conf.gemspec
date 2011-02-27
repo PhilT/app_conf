@@ -2,10 +2,10 @@ require 'base64'
 
 Gem::Specification.new do |s|
   s.name        = 'app_conf'
-  s.version     = '0.1.1'
+  s.version     = '0.1.2'
   s.authors     = 'Phil Thompson'
   s.email       = Base64.decode64("cGhpbEBlbGVjdHJpY3Zpc2lvbnMuY29t\n")
-  s.summary     = 'Simplest YAML Backed Application Configuration'
+  s.summary     = 'Simplest YAML Backed Application Wide Configuration (AppConfig)'
   s.homepage    = 'https://github.com/PhilT/app_conf'
   s.required_rubygems_version = '>= 1.3.6'
 

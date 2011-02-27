@@ -5,44 +5,65 @@ require 'app_conf'
 describe AppConf do
   before(:each) do
     @dir = File.dirname(__FILE__)
-  end
-
-  it 'cannot be instantiated directly' do
-    AppConf.new.must_be_nil
+    AppConf.clear
+    AppConf.load("#{@dir}/config.yml")
   end
 
   it 'works with dot notation' do
-    AppConf.load("#{@dir}/config.yml")
     AppConf.fullname.must_equal 'Joe Bloggs'
   end
 
+  describe 'clear' do
+    it 'clears all keys' do
+      AppConf.fullname.wont_be_nil
+      AppConf.clear
+      AppConf.fullname.must_be_nil
+    end
+
+    it 'does not return AppConf instance' do
+      AppConf.clear.must_be_nil
+    end
+  end
+
   it 'works with nested dot notation' do
-    AppConf.load("#{@dir}/config.yml")
     AppConf.user.name.first.must_equal 'Joe'
   end
 
   it 'works with multiple files' do
+    AppConf.clear
     AppConf.load("#{@dir}/config.yml", "#{@dir}/other.yml")
     AppConf.user.address.street.must_equal '1 Some Road'
     AppConf.user.name.first.must_equal 'Joe'
   end
 
+  it 'loads additional files' do
+    AppConf.load("#{@dir}/other.yml")
+    AppConf.user.address.street.must_equal '1 Some Road'
+    AppConf.user.name.first.must_equal 'Joe'
+  end
+
   it 'allows additional keys to be set' do
-    AppConf.load("#{@dir}/config.yml")
     AppConf.user.name.last = 'Bloggs'
     AppConf.user.name.last.must_equal 'Bloggs'
   end
 
   it 'allows existing keys to be overridden' do
-    AppConf.load("#{@dir}/config.yml")
     AppConf.user.name.first = 'Jody'
     AppConf.user.name.first.must_equal 'Jody'
   end
 
-  it 'does not allow nested items to be overwritten' do
-    AppConf.load("#{@dir}/config.yml")
-    lambda { AppConf.user.name = 'something' }.must_raise RuntimeError
-  end
+  describe 'limitations' do
+    it 'cannot be instantiated directly' do
+      AppConf.new.must_be_nil
+    end
 
+    it 'returns nil when unknown key specified' do
+      AppConf.unknown.must_be_nil
+    end
+
+    it 'does not allow nested items to be overwritten' do
+      lambda { AppConf.user.name = 'something' }.must_raise RuntimeError
+    end
+  end
 end
 

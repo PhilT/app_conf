@@ -1,8 +1,6 @@
 require 'yaml'
 
 class AppConf
-  attr_reader :config
-
   private_class_method :new
   def initialize
     @config = {}
@@ -13,6 +11,11 @@ class AppConf
     filenames.each do |filename|
       recurse(YAML.load(File.open(filename)), @@config)
     end
+  end
+
+  def self.clear
+    @@config = new
+    nil
   end
 
   def method_missing(method, *args, &block)
@@ -31,10 +34,13 @@ class AppConf
   end
 
 private
-  def self.recurse(yaml, app_config)
-    yaml.each do |k, v|
-      v = recurse(v, app_config.send(k) || new) if v.is_a?(Hash)
-      app_config.config[k] = v
+  def self.recurse(hash, app_config)
+    hash.each do |key, value|
+      if value.is_a?(Hash)
+        new_app_config = new
+        value = recurse(value, app_config.send(key) || new_app_config)
+      end
+      app_config.send("#{key}=", value) if new_app_config.nil? || value === new_app_config
     end
     app_config
   end

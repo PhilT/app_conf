@@ -1,12 +1,12 @@
 AppConf
 =======
-Simplest YAML Backed Application Configuration
+Simplest YAML Backed Application Wide Configuration (AppConfig)
 
 Installation
 ----------------------------------
     gem install app_conf
 
-Usage
+Example
 ----------------------------------
 config.yml
     ---
@@ -28,21 +28,50 @@ Code:
 
 Syntax
 ----------------------------------
+* Load multiple files at once:
+
     AppConf.load(*filenames)
+
+* Or individually:
+
+    AppConf.load(filename1)
+    AppConf.load(filename2)
+
+* Infinitely nested keys:
+
     AppConf.multiple.nested.keys
+
+* Override existing values:
+
     AppConf.loaded.from.yaml = 'can override'
+
+* Set new values:
+
     AppConf.non.existing.value = 'can set'
+
+* Clear entire tree:
+
+    AppConf.clear
+
+* Returns nil for non-existent keys:
+
+    AppConf.non_existing -> nil
+    AppConf.non_existing.name -> NoMethodError: undefined method `name' for nil:NilClass
+
+* Not dependent on Rails but easy to use with it. For example:
+
+    AppConf.load('config.yml', "#{Rails.env}.yml")
 
 Other stuff
 ----------------------------------
 * Works with Ruby 1.9.2
 * No gem dependencies
-* Tested with MiniTest::Spec
-* Not dependent on Rails but easy to use with it. For example:
-    `AppConf.load('config.yml', "#{Rails.env}.yml")`
+* Fully tested with MiniTest::Spec
+* Packaged as a Gem on RubyGems.org
 
 Why
 ----------------------------------
-* Because I wanted to write the simplest app config possible
-* Because I can
+* Because I wanted to write the simplest useful app config possible
+* Others are either too simple or incomplete, lack documentation or aren't Gem installable
+* Because I can :-)
 
