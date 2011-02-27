@@ -29,38 +29,30 @@ Code:
 Syntax
 ----------------------------------
 * Load multiple files at once:
-
-    AppConf.load(*filenames)
+  * `AppConf.load(*filenames)`
 
 * Or individually:
-
-    AppConf.load(filename1)
-    AppConf.load(filename2)
+  * `AppConf.load(filename1)`
+  * `AppConf.load(filename2)`
 
 * Infinitely nested keys:
-
-    AppConf.multiple.nested.keys
+  * `AppConf.multiple.nested.keys`
 
 * Override existing values:
-
-    AppConf.loaded.from.yaml = 'can override'
+  * `AppConf.loaded.from.yaml = 'can override'`
 
 * Set new values:
-
-    AppConf.non.existing.value = 'can set'
+  * `AppConf.non.existing.value = 'can set'`
 
 * Clear entire tree:
-
-    AppConf.clear
+  * `AppConf.clear`
 
 * Returns nil for non-existent keys:
-
-    AppConf.non_existing -> nil
-    AppConf.non_existing.name -> NoMethodError: undefined method `name' for nil:NilClass
+  * `AppConf.non_existing -> nil`
+  * `AppConf.non_existing.name -> NoMethodError: undefined method `name' for nil:NilClass`
 
 * Not dependent on Rails but easy to use with it. For example:
-
-    AppConf.load('config.yml', "#{Rails.env}.yml")
+  * `AppConf.load('config.yml', "#{Rails.env}.yml")`
 
 Other stuff
 ----------------------------------
