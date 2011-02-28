@@ -35,7 +35,7 @@ Or individually:
     AppConf.load(filename1)
     AppConf.load(filename2)
 
-Use either method calls or hash:
+Use either method calls or hash syntax:
     AppConf.fullname
     AppConf[:fullname]
     AppConf['fullname']
@@ -48,7 +48,7 @@ Override existing values:
     AppConf['loaded']['from']['yaml'] = 'can override'
 
 Set new values:
-    AppConf.non.existing.value = 'can set'
+    AppConf.non_existing_value = 'can set'
 
 Clear entire tree:
     AppConf.clear
@@ -72,4 +72,9 @@ Why
 * Because I wanted to write the simplest useful app config possible
 * Others are either too simple or incomplete, lack documentation or aren't Gem installable
 * Because I can :-)
+
+Known Issues
+----------------------------------
+Cannot assign values to unknown nested keys because they return nil
+    AppConf.non_existing.name = 'bla' -> NoMethodError: undefined method 'name=' for nil:NilClass
 
