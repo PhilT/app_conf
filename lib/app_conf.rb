@@ -1,11 +1,10 @@
 require 'yaml'
 
 class AppConf
-  @@root = new
-
   def initialize
     @hash = {}
   end
+  @@root = new
 
   def self.load(*filenames)
     filenames.each do |filename|
