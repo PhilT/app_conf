@@ -1,30 +1,30 @@
 require 'yaml'
 
 class AppConf
-  private_class_method :new
+  @@root = new
+
   def initialize
-    @config = {}
+    @hash = {}
   end
-  @@config = new
 
   def self.load(*filenames)
     filenames.each do |filename|
-      recurse(YAML.load(File.open(filename)), @@config)
+      from_hash(YAML.load(File.open(filename)))
     end
   end
 
   def self.clear
-    @@config = new
+    @@root = new
     nil
   end
 
   def [](key)
-    @config[key.to_s]
+    value = @hash[key.to_s]
   end
 
   def []=(key, value)
-    raise "Not allowed to overwrite nested entities" if @config[key.to_s].is_a?(AppConf)
-    @config[key.to_s] = value
+    raise "Not allowed to overwrite nested entities" if @hash[key.to_s].is_a?(AppConf)
+    @hash[key.to_s] = value
   end
 
   def method_missing(method, *args, &block)
@@ -36,15 +36,14 @@ class AppConf
   end
 
   def self.method_missing(method, *args, &block)
-    @@config.send(method, *args)
+    @@root.send(method, *args)
   end
 
-private
-  def self.recurse(hash, app_config)
+  def self.from_hash(hash, app_config = @@root)
     hash.each do |key, value|
       if value.is_a?(Hash)
         new_app_config = new
-        value = recurse(value, app_config[key] || new_app_config)
+        value = from_hash(value, app_config[key] || new_app_config)
       end
       app_config[key] = value if new_app_config.nil? || value === new_app_config
     end

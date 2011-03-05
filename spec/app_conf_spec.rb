@@ -9,6 +9,12 @@ describe AppConf do
     AppConf.load("#{@dir}/config.yml")
   end
 
+  it 'creates from a hash' do
+    AppConf.clear
+    AppConf.from_hash({:user => {:name => {:first => 'Joe'}}})
+    AppConf.user.name.first.must_equal 'Joe'
+  end
+
   it 'works with dot notation' do
     AppConf.fullname.must_equal 'Joe Bloggs'
   end
@@ -73,10 +79,6 @@ describe AppConf do
   end
 
   describe 'limitations' do
-    it 'cannot be instantiated directly' do
-      AppConf.new.must_be_nil
-    end
-
     it 'returns nil when unknown key specified' do
       AppConf.unknown.must_be_nil
     end

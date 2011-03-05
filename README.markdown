@@ -57,6 +57,9 @@ Returns nil for non-existent keys:
     AppConf.non_existing -> nil
     AppConf.non_existing.name -> NoMethodError: undefined method 'name' for nil:NilClass
 
+Use `from_hash` to create non-existent nodes:
+    AppConf.from_hash({...})
+
 Not dependent on Rails but easy to use with it. For example:
     AppConf.load('config.yml', "#{Rails.env}.yml")
 
@@ -75,6 +78,6 @@ Why
 
 Known Issues
 ----------------------------------
-Cannot assign values to unknown nested keys because they return nil
-    AppConf.non_existing.name = 'bla' -> NoMethodError: undefined method 'name=' for nil:NilClass
+Cannot assign values to unknown nested keys because they return nil (create the tree first):
+    AppConf.from_hash({:non_existing => {:name => 'bla'}})
 
