@@ -14,9 +14,17 @@ describe AppConf do
       AppConf.load("#{@dir}/config.yml")
     end
 
+    describe 'keys' do
+      it 'returns them' do
+        AppConf.from_hash(:users => {:joe => nil, :mark => nil})
+
+        AppConf.users.keys.must_equal %w(joe mark)
+      end
+    end
+
     it 'creates from a hash' do
       AppConf.clear
-      AppConf.from_hash({:user => {:name => {:first => 'Joe'}}})
+      AppConf.from_hash(:user => {:name => {:first => 'Joe'}})
       AppConf.user.name.first.must_equal 'Joe'
     end
 

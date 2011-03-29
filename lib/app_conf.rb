@@ -17,6 +17,10 @@ class AppConf
     nil
   end
 
+  def keys
+    @hash.keys
+  end
+
   def [](key)
     value = @hash[key.to_s]
   end
