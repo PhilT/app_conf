@@ -15,18 +15,21 @@ Example
 ----------------------------------
 
 config.yml
+
     ---
     fullname: Joe Bloggs
     user:
       name: Joe
 
 other.yml
+
     ---
     user:
       address:
         street: 1 Some Road
 
 Code:
+
     AppConf.load('config.yml', 'other.yml')
     AppConf.fullname -> 'Joe Blogs'
     AppConf.user.name -> 'Joe'
@@ -36,38 +39,48 @@ Syntax
 ----------------------------------
 
 Load multiple files at once:
+
     AppConf.load(*filenames)
 
 Or individually:
+
     AppConf.load(filename1)
     AppConf.load(filename2)
 
 Use either method calls or hash syntax:
+
     AppConf.fullname
     AppConf[:fullname]
     AppConf['fullname']
 
 Infinitely nested keys:
+
     AppConf.multiple.nested.keys
 
 Override existing values:
+
     AppConf.loaded.from.yaml = 'can override'
     AppConf['loaded']['from']['yaml'] = 'can override'
 
 Set new values:
+
     AppConf.non_existing_value = 'can set'
 
 Clear entire tree:
+
     AppConf.clear
 
 Returns nil for non-existent keys:
+
     AppConf.non_existing -> nil
     AppConf.non_existing.name -> NoMethodError: undefined method 'name' for nil:NilClass
 
 Use `from_hash` to create non-existent nodes:
+
     AppConf.from_hash({...})
 
 Not dependent on Rails but easy to use with it. For example:
+
     AppConf.load('config.yml', "#{Rails.env}.yml")
 
 Other stuff
@@ -86,5 +99,6 @@ Why
 Known Issues
 ----------------------------------
 Cannot assign values to unknown nested keys because they return nil (create the tree first):
+
     AppConf.from_hash({:non_existing => {:name => 'bla'}})
 
