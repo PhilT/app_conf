@@ -14,6 +14,13 @@ describe AppConf do
       AppConf.load("#{@dir}/config.yml")
     end
 
+    describe 'to_hash' do
+      it 'outputs a hash map' do
+        AppConf.load("#{@dir}/other.yml")
+        AppConf.to_hash.must_equal({'fullname' => 'Joe Bloggs', 'user' => {'name' => {'first' => 'Joe'}, 'address' => {'street' => '1 Some Road'}}})
+      end
+    end
+
     describe 'keys' do
       it 'returns them' do
         AppConf.from_hash(:users => {:joe => nil, :mark => nil})

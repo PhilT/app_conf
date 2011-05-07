@@ -17,6 +17,16 @@ class AppConf
     nil
   end
 
+  def self.to_hash
+    @@root.to_hash
+  end
+
+  def to_hash
+    hash = {}
+    @hash.each {|k, v| hash[k] = v.is_a?(AppConf) ? v.to_hash : v }
+    hash
+  end
+
   def keys
     @hash.keys
   end

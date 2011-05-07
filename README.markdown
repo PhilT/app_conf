@@ -2,6 +2,11 @@ AppConf
 =======
 Simplest YAML Backed Application Wide Configuration (AppConfig)
 
+* Load from YAML file(s)
+* Add additional key/value pairs in code
+* Use dot or bracket notation
+* `AppConf.to_hash` outputs a hash map of AppConf key/values
+
 Installation
 ----------------------------------
     gem install app_conf
