@@ -13,6 +13,7 @@ Installation
 
 Example
 ----------------------------------
+
 config.yml
     ---
     fullname: Joe Bloggs
@@ -33,6 +34,7 @@ Code:
 
 Syntax
 ----------------------------------
+
 Load multiple files at once:
     AppConf.load(*filenames)
 
