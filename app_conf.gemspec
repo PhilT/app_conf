@@ -2,7 +2,7 @@ require 'base64'
 
 Gem::Specification.new do |s|
   s.name        = 'app_conf'
-  s.version     = '0.2.4'
+  s.version     = '0.2.5'
   s.authors     = 'Phil Thompson'
   s.email       = Base64.decode64("cGhpbEBlbGVjdHJpY3Zpc2lvbnMuY29t\n")
   s.summary     = 'Simplest YAML Backed Application Wide Configuration (AppConfig)'
@@ -13,5 +13,7 @@ Gem::Specification.new do |s|
   s.test_files         = `git ls-files -- spec/*`.split("\n")
 
   s.require_path = 'lib'
+
+  s.add_development_dependency 'fakefs'
 end
 

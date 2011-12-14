@@ -14,7 +14,7 @@ task :install do
 
   result = `gem build #{gemspec_path} 2>&1`
   if result =~ /Successfully built/
-    system "gem uninstall -x #{spec.name} 2>&1"
+    system "gem uninstall -I #{spec.name} 2>&1"
     system "gem install #{spec.file_name} --no-rdoc --no-ri 2>&1"
   else
     raise result

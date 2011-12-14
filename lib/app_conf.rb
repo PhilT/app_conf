@@ -12,6 +12,16 @@ class AppConf
     end
   end
 
+  def self.save(key, filename)
+    mode = File.exist?(filename) ? 'r+' : 'w+'
+    File.open(filename, mode) do |f|
+      while f.readline =~ /^#/; end unless f.eof?
+      hash = {key.to_s => @@root[key].to_hash}
+      YAML.dump(hash, f)
+      f.truncate(f.pos)
+    end
+  end
+
   def self.clear
     @@root = new
     nil
