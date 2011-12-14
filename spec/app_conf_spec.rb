@@ -115,6 +115,11 @@ user:
     AppConf.user.name.first.must_equal 'Joe'
   end
 
+  it 'handles empty files' do
+    File.open('empty.yml', 'w') {}
+    AppConf.load('empty.yml')
+  end
+
   it 'allows additional keys to be set' do
     AppConf.user.name.last = 'Bloggs'
     AppConf.user.name.last.must_equal 'Bloggs'

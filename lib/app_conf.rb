@@ -8,7 +8,8 @@ class AppConf
 
   def self.load(*filenames)
     filenames.each do |filename|
-      from_hash(YAML.load(File.open(filename)))
+      content = YAML.load_file(filename)
+      from_hash(content) if content
     end
   end
 
