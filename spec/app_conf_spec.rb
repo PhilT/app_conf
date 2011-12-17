@@ -40,9 +40,14 @@ user:
     end
 
     it 'skips past comments' do
-      File.open('config.yml', 'w') {|f| f.write("# comment 1\n# comment 2\n\nRest of the config")}
+      File.open('config.yml', 'w') {|f| f.write("# comment 1\n# comment 2\n\n--- \nRest of the config")}
       AppConf.save :user, 'config.yml'
       File.read('config.yml').must_equal "# comment 1\n# comment 2\n\n--- \nuser: \n  name: \n    first: Joe\n"
+    end
+
+    it 'fails when no ---' do
+      File.open('config.yml', 'w') {|f| f.write('some config') }
+      lambda {AppConf.save :user, 'config.yml'}.must_raise YAML::ParseError
     end
   end
 

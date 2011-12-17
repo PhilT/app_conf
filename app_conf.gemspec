@@ -2,7 +2,7 @@ require 'base64'
 
 Gem::Specification.new do |s|
   s.name        = 'app_conf'
-  s.version     = '0.2.6'
+  s.version     = '0.2.7'
   s.authors     = 'Phil Thompson'
   s.email       = Base64.decode64("cGhpbEBlbGVjdHJpY3Zpc2lvbnMuY29t\n")
   s.summary     = 'Simplest YAML Backed Application Wide Configuration (AppConfig)'

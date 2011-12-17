@@ -14,9 +14,19 @@ class AppConf
   end
 
   def self.save(key, filename)
+
+
     mode = File.exist?(filename) ? 'r+' : 'w+'
     File.open(filename, mode) do |f|
-      while f.readline =~ /^#/; end unless f.eof?
+      unless f.eof?
+        begin
+          pos = f.pos
+          line = f.readline
+        rescue
+          raise YAML::ParseError, 'No document start (---) found.'
+        end until line =~ /^---/
+        f.seek(pos)
+      end
       hash = {key.to_s => @@root[key].to_hash}
       YAML.dump(hash, f)
       f.truncate(f.pos)
