@@ -14,17 +14,13 @@ class AppConf
   end
 
   def self.save(key, filename)
-
-
     mode = File.exist?(filename) ? 'r+' : 'w+'
     File.open(filename, mode) do |f|
       unless f.eof?
         begin
           pos = f.pos
           line = f.readline
-        rescue
-          raise YAML::ParseError, 'No document start (---) found.'
-        end until line =~ /^---/
+        end until line =~ /^---/ || f.eof?
         f.seek(pos)
       end
       hash = {key.to_s => @@root[key].to_hash}

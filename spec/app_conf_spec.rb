@@ -45,9 +45,10 @@ user:
       File.read('config.yml').must_equal "# comment 1\n# comment 2\n\n--- \nuser: \n  name: \n    first: Joe\n"
     end
 
-    it 'fails when no ---' do
+    it 'overwrites when no ---' do
       File.open('config.yml', 'w') {|f| f.write('some config') }
-      lambda {AppConf.save :user, 'config.yml'}.must_raise YAML::ParseError
+      AppConf.save :user, 'config.yml'
+      File.read('config.yml').must_equal "--- \nuser: \n  name: \n    first: Joe\n"
     end
   end
 
