@@ -33,6 +33,22 @@ user:
     AppConf.user.must_be_nil
   end
 
+  it 'clears a key' do
+    AppConf.user.clear :name
+    AppConf.user.name.must_be_nil
+  end
+
+  it 'clears a key in root' do
+    AppConf.clear :user
+    AppConf.user.must_be_nil
+  end
+
+  it 'cleared key can be overwritten' do
+    AppConf.clear :user
+    AppConf.user = 'something'
+    AppConf.user.must_equal 'something'
+  end
+
   describe 'save' do
     it 'saves a key and children to yml' do
       AppConf.save :user, 'temp.yml'

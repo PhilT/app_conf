@@ -29,9 +29,13 @@ class AppConf
     end
   end
 
-  def self.clear
-    @@root = new
+  def self.clear key = nil
+    key ? @@root.clear(key) : @@root = new
     nil
+  end
+
+  def clear key
+    @hash[key.to_s] = nil
   end
 
   def self.to_hash
