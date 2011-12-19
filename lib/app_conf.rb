@@ -21,7 +21,7 @@ class AppConf
           pos = f.pos
           line = f.readline
         end until line =~ /^---/ || f.eof?
-        f.seek(pos)
+        line =~ /^---/ ? f.seek(pos) : f.rewind
       end
       hash = {key.to_s => @@root[key].to_hash}
       YAML.dump(hash, f)

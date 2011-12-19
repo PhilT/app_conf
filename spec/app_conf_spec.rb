@@ -45,8 +45,14 @@ user:
       File.read('config.yml').must_equal "# comment 1\n# comment 2\n\n--- \nuser: \n  name: \n    first: Joe\n"
     end
 
-    it 'overwrites when no ---' do
-      File.open('config.yml', 'w') {|f| f.write('some config') }
+    it 'overwrites when no --- and single line' do
+      File.open('config.yml', 'w') {|f| f.write("some config\n") }
+      AppConf.save :user, 'config.yml'
+      File.read('config.yml').must_equal "--- \nuser: \n  name: \n    first: Joe\n"
+    end
+
+    it 'overwrites when no --- and multiline' do
+      File.open('config.yml', 'w') {|f| f.write("# Some\n# comments\n\nconfig:\n  name:\n") }
       AppConf.save :user, 'config.yml'
       File.read('config.yml').must_equal "--- \nuser: \n  name: \n    first: Joe\n"
     end
