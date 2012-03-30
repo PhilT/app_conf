@@ -32,7 +32,7 @@ other.yml
 
 Code:
 
-    $conf = $conf.new
+    $conf = AppConf.new
 
     $conf.load('config.yml', 'other.yml')
     $conf.fullname -> 'Joe Blogs'
