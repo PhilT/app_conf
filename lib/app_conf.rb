@@ -4,16 +4,15 @@ class AppConf
   def initialize
     @hash = {}
   end
-  @@root = new
 
-  def self.load(*filenames)
+  def load(*filenames)
     filenames.each do |filename|
       content = YAML.load_file(filename)
       from_hash(content) if content
     end
   end
 
-  def self.save(key, filename)
+  def save(key, filename)
     mode = File.exist?(filename) ? 'r+' : 'w+'
     File.open(filename, mode) do |f|
       unless f.eof?
@@ -23,23 +22,15 @@ class AppConf
         end until line =~ /^---/ || f.eof?
         line =~ /^---/ ? f.seek(pos) : f.rewind
       end
-      hash = {key.to_s => @@root[key].to_hash}
+      hash = {key.to_s => self[key].to_hash}
       YAML.dump(hash, f)
       f.truncate(f.pos)
     end
   end
 
-  def self.clear key = nil
-    key ? @@root.clear(key) : @@root = new
+  def clear key = nil
+    key ? @hash[key.to_s] = nil : @hash = {}
     nil
-  end
-
-  def clear key
-    @hash[key.to_s] = nil
-  end
-
-  def self.to_hash
-    @@root.to_hash
   end
 
   def to_hash
@@ -69,19 +60,12 @@ class AppConf
     end
   end
 
-  def self.method_missing(method, *args, &block)
-    @@root.send(method, *args)
-  end
-
-  def self.from_hash(hash, app_config = @@root)
+  def from_hash(hash)
     hash.each do |key, value|
-      if value.is_a?(Hash)
-        new_app_config = new
-        value = from_hash(value, app_config[key] || new_app_config)
-      end
-      app_config[key] = value if new_app_config.nil? || value === new_app_config
+      value = (self[key] || AppConf.new).from_hash(value) if value.is_a?(Hash)
+      @hash[key.to_s] = value
     end
-    app_config
+    self
   end
 end
 

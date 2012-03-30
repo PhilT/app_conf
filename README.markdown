@@ -1,11 +1,13 @@
 AppConf
-=======
-Simplest YAML Backed Application Wide Configuration (AppConfig)
+----------------------------------
+YAML Backed Application Wide Configuration with a few extras ($config)
 
-* Load from YAML file(s)
-* Add additional key/value pairs in code
+* Supports nested key/values
+* Loading and Saving of YAML files
+* Add further key/value pairs in code
 * Use dot or bracket notation
-* `AppConf.to_hash` outputs a hash map of AppConf key/values
+* `$conf.to_hash` outputs a hash map of $conf key/values
+* `$conf.from_hash` creates nested key/values from a hash
 
 Installation
 ----------------------------------
@@ -30,58 +32,60 @@ other.yml
 
 Code:
 
-    AppConf.load('config.yml', 'other.yml')
-    AppConf.fullname -> 'Joe Blogs'
-    AppConf.user.name -> 'Joe'
-    AppConf.user[:address]['street'] -> '1 Some Road'
+    $conf = $conf.new
+
+    $conf.load('config.yml', 'other.yml')
+    $conf.fullname -> 'Joe Blogs'
+    $conf.user.name -> 'Joe'
+    $conf.user[:address]['street'] -> '1 Some Road'
 
 Syntax
 ----------------------------------
 
 Load multiple files at once:
 
-    AppConf.load(*filenames)
+    $conf.load(*filenames)
 
 Or individually:
 
-    AppConf.load(filename1)
-    AppConf.load(filename2)
+    $conf.load(filename1)
+    $conf.load(filename2)
 
 Use either method calls or hash syntax:
 
-    AppConf.fullname
-    AppConf[:fullname]
-    AppConf['fullname']
+    $conf.fullname
+    $conf[:fullname]
+    $conf['fullname']
 
 Infinitely nested keys:
 
-    AppConf.multiple.nested.keys
+    $conf.multiple.nested.keys
 
 Override existing values:
 
-    AppConf.loaded.from.yaml = 'can override'
-    AppConf['loaded']['from']['yaml'] = 'can override'
+    $conf.loaded.from.yaml = 'can override'
+    $conf['loaded']['from']['yaml'] = 'can override'
 
 Set new values:
 
-    AppConf.non_existing_value = 'can set'
+    $conf.non_existing_value = 'can set'
 
 Clear entire tree:
 
-    AppConf.clear
+    $conf.clear
 
 Returns nil for non-existent keys:
 
-    AppConf.non_existing -> nil
-    AppConf.non_existing.name -> NoMethodError: undefined method 'name' for nil:NilClass
+    $conf.non_existing -> nil
+    $conf.non_existing.name -> NoMethodError: undefined method 'name' for nil:NilClass
 
 Use `from_hash` to create non-existent nodes:
 
-    AppConf.from_hash({...})
+    $conf.from_hash({...})
 
 Not dependent on Rails but easy to use with it. For example:
 
-    AppConf.load('config.yml', "#{Rails.env}.yml")
+    $conf.load('config.yml', "#{Rails.env}.yml")
 
 Other stuff
 ----------------------------------
@@ -100,5 +104,5 @@ Known Issues
 ----------------------------------
 Cannot assign values to unknown nested keys because they return nil (create the tree first):
 
-    AppConf.from_hash({:non_existing => {:name => 'bla'}})
+    $conf.from_hash({:non_existing => {:name => 'bla'}})
 
