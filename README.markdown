@@ -1,13 +1,13 @@
 AppConf
 ----------------------------------
-YAML Backed Application Wide Configuration with a few extras ($config)
+YAML Backed Application Wide Configuration with a few extras (AppConfig)
 
 * Supports nested key/values
 * Loading and Saving of YAML files
 * Add further key/value pairs in code
 * Use dot or bracket notation
-* `$conf.to_hash` outputs a hash map of $conf key/values
-* `$conf.from_hash` creates nested key/values from a hash
+* `AppConf#to_hash` outputs a hash map of AppConf key/values
+* `AppConf#from_hash` creates nested key/values from a hash
 
 Installation
 ----------------------------------
