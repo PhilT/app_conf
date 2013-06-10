@@ -1,11 +1,26 @@
-$LOAD_PATH << 'lib'
+gem 'minitest'
+
 require 'fakefs/safe'
 require 'minitest/autorun'
-require 'app_conf'
+require_relative 'minitest_fakefs_patch'
+require_relative '../lib/app_conf'
+
+module MiniTest
+  module Assertions
+    alias :actual_diff :diff
+
+    def diff exp, act
+      FakeFS.without do
+        actual_diff exp, act
+      end
+    end
+  end
+end
 
 describe AppConf do
   before do
     FakeFS.activate!
+    FakeFS::FileSystem.clear
 
     config =
 "fullname: Joe Bloggs
@@ -19,7 +34,7 @@ user:
       street: 1 Some Road
 "
     File.open('config.yml', 'w') {|f| f.write(config) }
-    File.open('other.yml', 'w') {|f| f.write(other)}
+    File.open('other.yml', 'w') {|f| f.write(other) }
     $conf = AppConf.new
     $conf.load("config.yml")
   end
@@ -61,21 +76,21 @@ user:
     end
 
     it 'skips past comments' do
-      File.open('config.yml', 'w') {|f| f.write("# comment 1\n# comment 2\n\n--- \nRest of the config")}
+      File.open('config.yml', 'w') {|f| f.write("# comment 1\n# comment 2\n\n---\nRest of the config")}
       $conf.save :user, 'config.yml'
-      File.read('config.yml').must_equal "# comment 1\n# comment 2\n\n--- \nuser: \n  name: \n    first: Joe\n"
+      File.read('config.yml').must_equal "# comment 1\n# comment 2\n\n---\nuser:\n  name:\n    first: Joe\n"
     end
 
     it 'overwrites when no --- and single line' do
       File.open('config.yml', 'w') {|f| f.write("some config\n") }
       $conf.save :user, 'config.yml'
-      File.read('config.yml').must_equal "--- \nuser: \n  name: \n    first: Joe\n"
+      File.read('config.yml').must_equal "---\nuser:\n  name:\n    first: Joe\n"
     end
 
     it 'overwrites when no --- and multiline' do
       File.open('config.yml', 'w') {|f| f.write("# Some\n# comments\n\nconfig:\n  name:\n") }
       $conf.save :user, 'config.yml'
-      File.read('config.yml').must_equal "--- \nuser: \n  name: \n    first: Joe\n"
+      File.read('config.yml').must_equal "---\nuser:\n  name:\n    first: Joe\n"
     end
   end
 
