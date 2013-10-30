@@ -93,7 +93,7 @@ Not dependent on Rails but easy to use with it. For example:
 
 Other stuff
 ----------------------------------
-* Works with Ruby 1.9.2
+* Works with Ruby 1.9.2 and 1.9.3
 * No gem dependencies
 * Fully tested with MiniTest::Spec
 * Packaged as a Gem on RubyGems.org
