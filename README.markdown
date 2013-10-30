@@ -1,6 +1,9 @@
 AppConf
 ----------------------------------
-YAML Backed Application Wide Configuration with a few extras (AppConfig)
+
+YAML Backed Application Wide Configuration with a few extras
+
+(AppConfig like)
 
 * Supports nested key/values
 * Loading and Saving of YAML files
@@ -11,6 +14,7 @@ YAML Backed Application Wide Configuration with a few extras (AppConfig)
 
 Installation
 ----------------------------------
+
     gem install app_conf
 
 Example
@@ -93,6 +97,7 @@ Other stuff
 * No gem dependencies
 * Fully tested with MiniTest::Spec
 * Packaged as a Gem on RubyGems.org
+* Less than 80 lines of code (not including tests)
 
 Why
 ----------------------------------

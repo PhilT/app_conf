@@ -1,14 +1,15 @@
-gem 'minitest'
+gem 'minitest', require: 'minitest/autorun'
+gem 'fakefs', require: 'fakefs/safe'
 
 require 'fakefs/safe'
 require 'minitest/autorun'
-require_relative 'minitest_fakefs_patch'
 require_relative '../lib/app_conf'
 
 module MiniTest
   module Assertions
     alias :actual_diff :diff
 
+    # Stop FakeFS interfering with saving multiline diffs
     def diff exp, act
       FakeFS.without do
         actual_diff exp, act
@@ -161,11 +162,6 @@ user:
     $conf.load("other.yml")
     $conf.user.address.street.must_equal '1 Some Road'
     $conf.user.name.first.must_equal 'Joe'
-  end
-
-  it 'handles empty files' do
-    File.open('empty.yml', 'w') {}
-    $conf.load('empty.yml')
   end
 
   it 'allows additional keys to be set' do

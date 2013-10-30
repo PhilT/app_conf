@@ -1,5 +1,8 @@
 require 'yaml'
 
+# Stop warning showing when used with SafeYAML
+SafeYAML::OPTIONS[:default_mode] = :safe if defined?(SafeYAML)
+
 class AppConf
   def initialize
     @hash = {}
